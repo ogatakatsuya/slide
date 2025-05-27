@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "preview": "marp src/md/slide.md --theme src/theme/slide.css --preview",
-    "pdf": "marp src/md/slide.md --theme src/theme/slide.css --pdf -o output/slide.pdf"
+    "pdf": "marp src/md/slide.md --theme src/theme/slide.css --pdf -o output/slide.pdf",
+    "build": "marp src/md/slide.md -o ogp/slide.png"
   },
   "keywords": [],
   "author": "",
