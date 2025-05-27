@@ -5,16 +5,14 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Check markdown input directory
-        run: |
-          echo "Listing ./src/md contents:"
-          ls -al ./src/md || echo "⚠️ ./src/md directory not found"
 
       - name: Convert Markdown into PDF
         uses: KoharaKazuya/marp-cli-action@v2
@@ -22,16 +20,6 @@ jobs:
           config-file: ./.marprc-ci.yml
           generate-html: true
           generate-pdf: true
-
-      - name: Check output directory
-        run: |
-          echo "Listing ./output contents after Marp run:"
-          ls -al ./output || echo "⚠️ ./output directory not found or empty"
-
-      - name: Check workspace (optional)
-        run: |
-          echo "Listing entire workspace for debugging:"
-          ls -alR
 
       - name: Save outputs
         uses: actions/upload-artifact@v4
