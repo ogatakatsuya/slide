@@ -22,6 +22,15 @@ jobs:
       - name: Build Slides
         run: pnpm build
 
+      - name: Inspect build output # ★このステップを追加
+        run: |
+          echo "--- dist/ ディレクトリの詳細リスト (シンボリックリンクはパーミッションの先頭が 'l' で示されます):"
+          ls -lR dist
+          echo "--- dist/ ディレクトリ内のすべてのシンボリックリンクを検索:"
+          find dist -type l -ls
+          echo "--- dist/ ディレクトリの合計サイズを確認:"
+          du -sh dist
+
       - name: Save outputs
         uses: actions/upload-artifact@v4
         with:
