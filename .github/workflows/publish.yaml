@@ -22,6 +22,11 @@ jobs:
       - name: Build Slides
         run: pnpm build
 
+      - name: Generate directory listing
+        uses: yKicchan/generate-directory-listing-action@v1
+        with:
+          target: dist
+
       - name: Save outputs
         uses: actions/upload-pages-artifact@v3
         with:
