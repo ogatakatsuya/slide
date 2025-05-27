@@ -12,3 +12,35 @@ description: 中島研究室のセミナー発表資料
 
 MIM Lab 
 Katsuya Ogata
+
+---
+
+<!-- _header: Introduction -->
+
+---
+
+<!-- _header: Fast Approximate Convolutions on Graphs -->
+
+---
+
+<!-- _header: Semi-Supervised Node Classification -->
+
+---
+
+<!-- _header: Related Work -->
+
+---
+
+<!-- _header: Experiments -->
+
+---
+
+<!-- _header: Results -->
+
+---
+
+<!-- _header: Discussion -->
+
+---
+
+<!-- _header: Conclusion -->
