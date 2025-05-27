@@ -1,0 +1,17 @@
+{
+  "name": "slide",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "preview": "marp src/md/slide.md --theme src/theme/slide.css --preview",
+    "pdf": "marp src/md/slide.md --theme src/theme/slide.css --pdf -o output/slide.pdf"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.11.0",
+  "devDependencies": {
+    "@marp-team/marp-cli": "^4.1.2"
+  }
+}
