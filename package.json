@@ -6,7 +6,9 @@
   "scripts": {
     "preview": "marp src/md/slide.md --theme src/theme/slide.css --preview",
     "pdf": "marp src/md/slide.md --theme src/theme/slide.css --pdf -o output/slide.pdf",
-    "build": "marp src/md/slide.md -o ogp/slide.png"
+    "prebuild": "rm -rf dist && mkdir -p dist && cp -r src/md/* dist",
+    "build": "marp dist --image png && marp dist",
+    "new": "./scripts/new-slide.sh"
   },
   "keywords": [],
   "author": "",
