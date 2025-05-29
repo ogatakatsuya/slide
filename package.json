@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "preview": "marp src/md/slide.md --theme src/theme/slide.css --preview",
-    "pdf": "marp src/md/slide.md --theme src/theme/slide.css --pdf -o output/slide.pdf",
+    "dev": "marp -w --html -s src/md",
     "prebuild": "rm -rf dist && mkdir -p dist && cp -r src/md/* dist",
     "build": "marp dist --image png && marp dist",
     "new": "./scripts/new-slide.sh"
@@ -16,5 +15,11 @@
   "packageManager": "pnpm@10.11.0",
   "devDependencies": {
     "@marp-team/marp-cli": "^4.1.2"
+  },
+  "dependencies": {
+    "markdown-it-attrs": "^4.3.1",
+    "markdown-it-container": "^4.0.0",
+    "markdown-it-latex": "^0.2.0",
+    "markdown-it-mark": "^4.0.0"
   }
 }

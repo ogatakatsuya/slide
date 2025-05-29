@@ -1,3 +1,4 @@
 lang: ja
 allowLocalFiles: true
 theme: src/theme/slide.css
+engine: src/engine.mjs
