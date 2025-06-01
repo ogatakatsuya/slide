@@ -323,7 +323,7 @@ Where:
 
 ## Generalization to Multiple Channels/Filters
 
-This definition can be generalized for a signal $X \in \mathbb{R}^{N \times C}$ (with C input channels, i.e., a C-dimensional feature vector for each node) and F filters or feature maps as follows:
+This definition can be generalized for a signal $X \in \mathbb{R}^{N \times C}$ (with C input channels and F filters or feature maps) as follows:
 
 $$Z = \tilde{D}^{-1/2}\tilde{A}\tilde{D}^{-1/2}X\Theta \quad (Eq. 8)$$
 
