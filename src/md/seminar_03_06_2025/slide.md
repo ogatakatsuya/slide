@@ -22,11 +22,10 @@ Katsuya Ogata
 1. Introduction
 1. Fast Approximate Convolutions on Graphs
 1. Semi-Supervised Node Classification
-1. Related Work
 1. Experiments
 1. Results
 1. Discussion
-
+1. Appendix
 ---
 
 <!-- _header: Basic Knowledge of GNN -->
@@ -50,7 +49,7 @@ Katsuya Ogata
 
 - Study the properties of graphs by analyzing the **eigenvalues** and **eigenvectors** of matrices associated with the graph.
 
-- Think of these eigenvalues as a kind of "fingerprint" or "signature" of the graph. They reveal crucial structural and global properties, such as:
+- We reveal crucial structural and global properties, such as:
 
   - Connectivity (how well the graph is connected)
   - Bipartiteness (if the graph can be divided into two independent sets)
@@ -105,9 +104,6 @@ Where:
 - $U$: matrix of eigenvectors (graph Fourier basis)
 - $x$: graph signal
 
-For more details, refer to:  
-[Shuman, D.I., Narang, S.K., Frossard, P., Ortega, A., Vandergheynst, P., 2013]
-
 ---
 
 <!-- _header: Basic Knowledge of GNN -->
@@ -143,18 +139,6 @@ This simplifies the filter design and makes learning scalable.
 1. Return to the original space
 
 ==![w:800](./image/graph_fourier.png)=={.image}
-
----
-
-<!-- _header: Basic Knowledge of GNN -->
-
-## What is Semi-Supervised Learning?
-
-- **Semi-Supervised Learning**  
-  A learning setup where only a small portion of data points have labels, and the rest are unlabeled.
-
-- Goal:  
-  Use both labeled and unlabeled data to improve model performance.
 
 ---
 
@@ -256,8 +240,6 @@ $$g_{\theta'}(\Lambda) \approx \sum_{k=0}^K \theta'_k T_k(\tilde{\Lambda})$$
     - $\lambda_{max}$: Largest eigenvalue of $L$
     - The range of $\tilde{\Lambda}$ becomes $[-1, 1]$, matching the domain of Chebyshev polynomials.
 
-- **$\theta' \in \mathbb{R}^K$**: Vector of Chebyshev coefficients (new learnable parameters)
-
 - **Chebyshev polynomials $T_k(x)$:**
     - $T_0(x) = 1$
     - $T_1(x) = x$
@@ -283,7 +265,7 @@ $$g_{\theta'} \star x \approx \sum_{k=0}^K \theta'_k T_k(\tilde{L})x$$
 ---
 <!-- _header: Fast Approximate Convolutions on Graphs -->
 
-**Important Properties:**
+## Important Properties:
 1.  **$K$-localized**:
     - $T_k(\tilde{L})$ is a $K^{th}$-order polynomial in the Laplacian.
     - The convolution result depends only on nodes that are at maximum $K$ steps away from the central node (Kth-order neighborhood).
@@ -323,11 +305,10 @@ Where:
 
 ## Generalization to Multiple Channels/Filters
 
-This definition can be generalized for a signal $X \in \mathbb{R}^{N \times C}$ (with C input channels and F filters or feature maps) as follows:
-
 $$Z = \tilde{D}^{-1/2}\tilde{A}\tilde{D}^{-1/2}X\Theta \quad (Eq. 8)$$
 
 Where:
+- $X \in \mathbb{R}^{N \times C}$ is the matrix of input graph signal.
 - $\Theta \in \mathbb{R}^{C \times F}$ is the matrix of filter parameters.
 - $Z \in \mathbb{R}^{N \times F}$ is the convolved signal matrix.
 - This filtering operation has a complexity of $O(|E|FC)$, as $\tilde{A}X$ can be efficiently implemented as a product of a sparse matrix with a dense matrix.
@@ -337,6 +318,8 @@ Where:
 <!-- _header: Semi-Supervised Node Classification -->
 
 ## Two-Layer GCN
+
+$$H^{(l+1)} = \sigma(\tilde{D}^{1/2}\tilde{A}\tilde{D}^{1/2}H^{(l)}W^{(l)}) $$
 
 $$Z = f(X, A) = softmax((\hat{A}  ReLU(\hat{A}XW^{(0)})W^{(1)}))$$
 
@@ -353,52 +336,13 @@ Where:
 
 Evaluate the cross-entropy error over all labeled examples：
 
-$$L = -\sum_{l \in \mathcal{Y}_L} \sum_{f=1}^{F} Y_{lf} \ln Z_{lf} \quad (10)$$
+$$L = -\sum_{l \in \mathcal{Y}_L} \sum_{f=1}^{F} Y_{lf} \ln Z_{lf}$$
 
 **Explanation of symbols:**
 - $\mathcal{Y}_L$: index set of labelled nodes
 - $F$: number of output classes
 - $Y_{lf}$: true label for class $f$ of node $l$.
 - $Z_{lf}$: predicted probability for class $f$ of node $l$.
-
----
-
-<!-- _header: Related Work -->
-
-### Graph-Based Semi-Supervised Learning
-#### Traditional Approaches
-- **Graph Laplacian Regularization**: Label propagation, manifold regularization, deep semi-supervised embedding
-- **Graph Embedding Methods**: DeepWalk, LINE, node2vec (skip-gram based with random walks)
-- **Limitation**: Multi-step pipelines requiring separate optimization of each component
-
-#### Recent Developments
-- **Planetoid**: Injects label information during embedding learning process
-
----
-<!-- _header: Related Work -->
-
-### Neural Networks on Graphs
-#### Early Work
-- **Graph Neural Networks** (Gori et al., 2005): Recurrent networks with contraction maps
-- **Modern Extensions** (Li et al., 2016): Advanced RNN training techniques
-
-#### Convolution-Based Approaches
-- **Spectral Methods** (Bruna et al., 2014): O(N²) complexity limitation
-- **Localized Convolutions** (Defferrard et al., 2016): Fast Chebyshev polynomial approximation
-- **Degree-Specific Weights** (Duvenaud et al., 2015): Scalability issues for wide degree distributions
-
----
-
-<!-- _header: Experiments -->
-
-## Experimental Overview
-
-We test our GCN model in multiple scenarios:
-
-- **Semi-supervised document classification** in citation networks
-- **Semi-supervised entity classification** in bipartite graphs from knowledge graphs
-- **Evaluation of various graph propagation models**
-- **Runtime analysis** on random graphs
 
 ---
 <!-- _header: Experiments -->
@@ -448,10 +392,10 @@ We test our GCN model in multiple scenarios:
 ## For Runtime Analysis (Random graphs)
 
 **Generation Process:**
-- N nodes → 2N edges assigned uniformly at random
-- **Feature Matrix**: Identity matrix I_N (featureless approach)
+- $N$ nodes → $2N$ edges assigned uniformly at random
+- **Feature Matrix**: Identity matrix $I_N$ (featureless approach)
 - Each node represented by unique one-hot vector
-- Dummy labels: Y_i = 1 for all nodes
+- Dummy labels: $Y_i = 1$ for all nodes
 
 **Purpose:** Measure training time per epoch across different graph sizes
 
@@ -461,52 +405,16 @@ We test our GCN model in multiple scenarios:
 ## Model Configuration
 - **Architecture**: 2-layer GCN (Section 3.1)
 - **Test Set**: 1,000 labeled examples
-- **Validation Set**: 500 labeled examples
-- **Deeper Models**: Up to 10 layers (Appendix B)
-
-## Training Parameters
+- **Validation Set**: 500 labeled examples for hyperparemeter optimization (dropout rate, the number of hidden units and L2 regularization factor)
 - **Optimizer**: Adam (learning rate = 0.01)
 - **Max Epochs**: 200
+- **Learning Rate** 0.01
 - **Early Stopping**: Window size = 10
 - **Weight Initialization**: Glorot & Bengio (2010)
 
----
 <!-- _header: Experiments -->
 
-## Citation Networks
-- Optimize on **Cora only**
-- Apply same parameters to Citeseer and Pubmed
-
-## Tuned Parameters
-- **Dropout rate** (all layers)
-- **L2 regularization factor** (first GCN layer)
-- **Number of hidden units**
-
-## Random Graphs
-- Hidden layer size: **32 units**
-- **No regularization** (no dropout, no L2)
-
----
-<!-- _header: Experiments -->
-
-## Model Baseline
-
-### Traditional Graph-based Methods
-- **LP**: Label Propagation (Zhu et al., 2003)
-- **ManiReg**: Manifold Regularization (Belkin et al., 2006)
-- **SemiEmb**: Semi-supervised Embedding (Weston et al., 2012)
-
-### Embedding-based Methods
-- **DeepWalk**: Skip-gram based graph embeddings (Perozzi et al., 2014)
-
-### Classification Methods
-- **ICA**: Iterative Classification Algorithm (Lu & Getoor, 2003)
-- **Planetoid**: Best-performing variant (Yang et al., 2016)
-
----
-<!-- _header: Experiments -->
-
-## Iterative Classification Algorithm (ICA)
+<!-- ## Iterative Classification Algorithm (ICA)
 
 ### Two-stage Process
 
@@ -519,24 +427,7 @@ We test our GCN model in multiple scenarios:
    - 10 iterations with random node ordering
    - Hyperparameters chosen via validation
 
-**Note**: TSVM omitted due to scalability issues with large class numbers
-
----
-<!-- _header: Experiments -->
-
-## Key Experimental Highlights
-
-### Comprehensive Evaluation
-- **4 diverse datasets** spanning different domains
-- **Multiple baseline comparisons** 
-- **Runtime analysis** for scalability assessment
-
-### Rigorous Methodology
-- Same data splits as previous work (Yang et al., 2016)
-- Proper validation methodology
-- Fair comparison with state-of-the-art methods
-
-**Next**: Results demonstrate significant improvements across all metrics
+**Note**: TSVM omitted due to scalability issues with large class numbers -->
 
 ---
 
@@ -545,8 +436,6 @@ We test our GCN model in multiple scenarios:
 ## Semi-Supervised Node Classification Results
 
 ==![w:1200](./image/result1.png)=={.image}
-
-### Training time until convergence shown in parentheses
 
 ---
 
@@ -558,11 +447,11 @@ We test our GCN model in multiple scenarios:
 
 ==![w:1200](./image/result2.png)=={.image}
 
----
+<!-- --- -->
 
 <!-- _header: Results -->
 
-### Renormalization Trick Superior
+<!-- ### Renormalization Trick Superior
 - **Best overall performance** across all datasets
 - Balances efficiency and representation power
 
@@ -573,7 +462,7 @@ We test our GCN model in multiple scenarios:
 ### Simpler Can Be Better
 - **Renormalization trick** outperforms complex Chebyshev polynomials
 - **Fewer parameters** → better generalization
-- **Lower computational cost** → practical advantages
+- **Lower computational cost** → practical advantages -->
 
 ---
 
@@ -581,36 +470,16 @@ We test our GCN model in multiple scenarios:
 
 ## Training Time Analysis
 
-### Scalability on Random Graphs
-
-==![w:500](./image/result3.png)=={.image}
+==![w:700](./image/result3.png)=={.image}
 
 ### Key Finding
 Linear scalability enables application to very large graphs
 
 ---
 
-<!-- _header: Results -->
-
-## Why GCN Works Better
-
-### Methodological Advantages
-- **Direct graph encoding** vs explicit regularization
-- **Unified optimization** vs multi-step pipelines
-- **Efficient propagation** vs expensive random walks
-
-### Architectural Benefits
-- **Localized convolutions** capture neighborhood structure
-- **Parameter sharing** across graph structure
-- **Renormalization trick** balances self vs neighbor information
-
----
-
 <!-- _header: Discussion -->
 
-## Semi-Supervised Model Analysis
-
-### Why GCN Outperforms Traditional Methods
+## Why GCN Outperforms Traditional Methods
 
 #### Graph-Laplacian Regularization Limitations
 - **Assumption**: Edges encode mere similarity of nodes
@@ -629,104 +498,31 @@ Linear scalability enables application to very large graphs
 ## Limitations and Future Work
 
 ### Memory Requirements
-#### Current Challenge
-- **Full-batch gradient descent**: Memory grows linearly with dataset size
-- **Large graphs**: May not fit in GPU memory
-- **CPU training**: Viable option but slower
+- Mini-batch SGD, Approximate methods, Distributed training
 
-#### Proposed Solutions
-- **Mini-batch SGD**: Consider K-hop neighborhoods for K-layer GCN
-- **Approximate methods**: For very large, densely connected graphs
-- **Distributed training**: Scale to massive datasets
+### Directed edges and edge features
+- Native directed graph support, Edge feature integration, Heterogeneous graph handling
 
----
-
-<!-- _header: Discussion -->
-
-## Directed edges and edge features
-
-#### Current Restrictions
-- **Undirected graphs only**: Weighted or unweighted
-- **No edge features**: Cannot naturally incorporate edge attributes
-
-### Future Extensions
-- **Native directed graph support**
-- **Edge feature integration**
-- **Heterogeneous graph handling**
-
----
-
-<!-- _header: Discussion -->
-
-## Current Limiting Assumptions
-
-#### Locality Assumption
-- **K-hop neighborhood**: Dependence limited to K layers
-- **Fixed receptive field**: May be suboptimal for some graphs
-
-#### Equal Importance Assumption
-- **Self-connections vs neighbors**: Currently equal weight
-- **Trade-off parameter**: Could be beneficial
-
-### Proposed Enhancement
+### Current Limiting Assumptions
 $$\tilde{A} = A + λI_N$$
 
 - **λ**: Learnable trade-off parameter
+<!-- 
+---
+
+# Appendix
 
 ---
 
-<!-- _header: Conclusion -->
+<!-- _header: Related Work -->
 
-### Key Contributions
-- **Novel scalable approach** for semi-supervised learning on graph-structured data
-- **Efficient variant** of convolutional neural networks operating directly on graphs
-- **First-order approximation** of spectral graph convolutions with linear O(|E|) scaling
-- **Hidden representations** encoding both local graph structure and node features
+<!-- ## Graph-Based Semi-Supervised Learning
+- **Traditional**: Graph Laplacian regularization, graph embedding (DeepWalk, etc.). Multi-step pipelines were a limitation.
+- **Recent**: Planetoid injects label info during embedding.
 
----
-
-<!-- _header: Appendix -->
-
-## Spectral GNNs: Polynomial Filter Approximation
-
-- **Sopectral Graph Convolution**: $g_w * x = U g_w U^T x$
-- These models often use filters defined as a function of eigenvalues:  
-  $g_w := g(\Lambda)$
-
-- **Direct eigendecomposition is computationally expensive.**  
-  To address this, the filter is expressed as a $K$-th order polynomial:
-  $$
-  g(\Lambda) = \sum_{k=0}^K w_k (I - \Lambda)^k
-  $$
----
-
-<!-- _header: Appendix -->
-
-## Spectral GNNs: Polynomial Filter Approximation
-
-- The convolution can then be rewritten as:
-  $$
-  U g(\Lambda) U^T X = \sum_{k=0}^K w_k \tilde{A}^k X
-  $$
-  where $\tilde{A} = D^{1/2}AD^{1/2}$ is the normalized adjacency matrix.
-
-- **Key Points:**
-  - Eigenvectors and eigenvalues disappear from the final expression.
-  - The operation is now a sum of powers of the normalized adjacency matrix.
----
-
-<!-- _header: Appendix -->
-
-- Expanding the equation:
-  $$
-  U g(\Lambda) U^T X = U \left( \sum_{k=0}^K w_k (I - \Lambda)^k \right) U^T X
-  $$
-  $$
-  = \sum_{k=0}^K w_k U (I - \Lambda)^k U^T X
-  $$
-  $$
-  = \sum_{k=0}^K w_k (I - U \Lambda U^T)^k X
-  $$
-  $$
-  = \sum_{k=0}^K w_k \tilde{A}^k X
-  $$
+## Neural Networks on Graphs
+- **Early Work**: Graph Neural Networks (Gori et al., 2005)
+- **Convolution-Based**:
+    - Spectral Methods (Bruna et al., 2014): O($N^2$) complexity.
+    - Localized Convolutions (Defferrard et al., 2016): Fast Chebyshev approximation.
+    - Degree-Specific Weights (Duvenaud et al., 2015): Scalability issues for wide degree distributions. --> -->

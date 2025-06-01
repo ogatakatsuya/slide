@@ -37,6 +37,9 @@ section.lead h1 {
 section.lead h1 strong {
   -webkit-text-stroke: 1px #286da9 ;
 }
+h2 {
+  color: #163f64;
+}
 section.lead h2 {
   color: #286da9 ;
   text-align: left;
