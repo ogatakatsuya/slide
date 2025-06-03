@@ -101,7 +101,7 @@ Katsuya Ogata
   $$ F^{-1}(x) = U x $$
 
 Where:
-- $U$: matrix of eigenvectors (graph Fourier basis)
+- $U$: matrix of eigenvectors ($\tilde{L} = U \Lambda U^T$)
 - $x$: graph signal
 
 ---
@@ -209,13 +209,14 @@ $$
 ## Computational Cost Issues
 
 $$g_\theta \star x = U g_\theta U^T x$$
+$$( \theta \in R^N, x \in R^N )$$
 
 1.  **Multiplication with eigenvector matrix $U$**:
     - Computational complexity is $O(N^2)$ ($N$: number of nodes)
     - Very expensive for large graphs
 
 2.  **Eigendecomposition of graph Laplacian $L$**:
-    - Necessary to obtain $U$ and $\Lambda$
+    - Necessary to obtain $U$
     - Also computationally prohibitive for large graphs
 
 ---
@@ -237,7 +238,7 @@ $$g_{\theta'}(\Lambda) \approx \sum_{k=0}^K \theta'_k T_k(\tilde{\Lambda})$$
 
 - **$\tilde{\Lambda}$ (Rescaled eigenvalues):**
     $$\tilde{\Lambda} = \frac{2}{\lambda_{max}}\Lambda - I_N$$
-    - $\lambda_{max}$: Largest eigenvalue of $L$
+    - $\lambda_{max}$: Largest eigenvalue of $\tilde{L}${.empty}
     - The range of $\tilde{\Lambda}$ becomes $[-1, 1]$, matching the domain of Chebyshev polynomials.
 
 - **Chebyshev polynomials $T_k(x)$:**
@@ -258,9 +259,21 @@ $$g_{\theta'} \star x \approx U \left( \sum_{k=0}^K \theta'_k T_k(\tilde{\Lambda
 
 $$g_{\theta'} \star x \approx \sum_{k=0}^K \theta'_k U T_k(\tilde{\Lambda}) U^T x$$
 
-Using $T_k(\tilde{L}) = U T_k(\tilde{\Lambda}) U^T$, we get:
+---
+
+<!-- _header: Fast Approximate Convolutions on Graphs -->
+
+Using 
+
+$$(U\tilde{\Lambda}U^T)^k = U\tilde{\Lambda}^kU^T$$
+$$T_k(\tilde{L}) = U T_k(\tilde{\Lambda}) U^T$$
+
+we get:
 
 $$g_{\theta'} \star x \approx \sum_{k=0}^K \theta'_k T_k(\tilde{L})x$$
+
+where:
+$$\tilde{L} = \frac{2}{\lambda_{max}}L - I_N$$
 
 ---
 <!-- _header: Fast Approximate Convolutions on Graphs -->
@@ -284,7 +297,7 @@ We approximate $\lambda_{max} \approx 2$ and $K=1$.(It is expected that neural n
 Under these approximations, Eq. 5 simplifies to:
 
 $$g_{\theta'} \star x \approx {\theta'}_0 x + {\theta'}_1 (L-I_N)x$$
-$$g_{\theta'} \star x = {\theta'}_0 x + {\theta'}_1 D^{1/2}AD^{1/2}x$$
+$$g_{\theta'} \star x = {\theta'}_0 x - {\theta'}_1 D^{1/2}AD^{1/2}x$$
 $$g_{\theta'} \star x \approx \theta(I_N + D^{1/2}AD^{1/2})x$$
 
 ---
@@ -481,15 +494,17 @@ Linear scalability enables application to very large graphs
 
 ## Why GCN Outperforms Traditional Methods
 
-#### Graph-Laplacian Regularization Limitations
-- **Assumption**: Edges encode mere similarity of nodes
-- **Restriction**: Limited modeling capacity
-- **Challenge**: Difficult to optimize multi-step pipeline
+### 1. End-to-End Learning
+- **Other methods**: Multi-step pipeline (embedding learning → classifier training)
+- **GCN**: Unified optimization with single loss function
 
-#### Skip-gram Based Method Limitations
-- **Multi-step pipeline**: Each step optimized separately
-- **Suboptimal**: Cannot achieve end-to-end optimization
-- **Complexity**: Random walk generation + semi-supervised training
+### 2. Efficient Information Propagation
+- **Graph Laplacian methods**: Limited by assumption that edges = node similarity
+- **GCN**: Propagates **feature information** through neighbors at each layer
+
+### 3. Computational Efficiency
+- **Complexity**: O(|E|) - linear in number of edges
+- **Speed**: **3-4x faster** than Planetoid (Cora: 13s→4s)
 
 ---
 
