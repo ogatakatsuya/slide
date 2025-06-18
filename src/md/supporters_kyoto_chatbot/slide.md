@@ -1,6 +1,8 @@
 ---
 marp: true
 image: https://ogatakatsuya.github.io/slide/supporters_kyoto_chatbot/slide.png
+title: 履修登録チャットボット
+description: 技育CAMPキャラバン@京都(2025-06-28)のためのプレゼン資料
 ---
 <!-- paginate: true -->
 
