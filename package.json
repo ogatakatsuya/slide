@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "marp -w --html -s src/md",
+    "dev": "PORT=8081 marp -w --html -s src/md",
     "prebuild": "rm -rf dist && mkdir -p dist && cp -r src/md/* dist",
     "build": "marp dist --image png && marp dist",
     "new": "./scripts/new-slide.sh"

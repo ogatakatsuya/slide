@@ -138,3 +138,8 @@ code {
   justify-content: center;
 }
 
+/* 中央寄せ用スタイル */
+.center {
+  text-align: center;
+}
+
