@@ -23,7 +23,7 @@ jobs:
         run: pnpm build
 
       - name: Copy static files
-        run: cp -r static dist/
+        run: cp -r static/* dist/
 
       - name: Generate directory listing
         uses: yKicchan/generate-directory-listing-action@v1
