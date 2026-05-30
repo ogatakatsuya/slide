@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "PORT=8081 marp -w --html -s src/md",
     "prebuild": "rm -rf dist && mkdir -p dist && cp -r src/md/* dist",
-    "build": "marp dist --image png && marp dist",
+    "build": "marp dist --html --image png && marp dist --html",
     "new": "./scripts/new-slide.sh"
   },
   "keywords": [],

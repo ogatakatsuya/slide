@@ -137,33 +137,35 @@ code {
 }
 
 /* Agenda スライド用スタイル */
-.agenda ol {
-  list-style: none;
+section.agenda ol {
+  list-style: none !important;
   counter-reset: agenda-counter;
   padding: 0;
-  margin-top: 1em;
+  margin-top: 1.2em;
 }
 
-.agenda ol li {
+section.agenda ol li {
   counter-increment: agenda-counter;
-  font-size: 1.4em;
-  padding: 0.4em 0 0.4em 2.5em;
-  position: relative;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.8em;
+  font-size: 1.6em !important;
+  font-weight: 700 !important;
+  padding: 0.55em 0 !important;
   border-bottom: 1px solid #e8e8e8;
   color: #333;
+  margin: 0 !important;
 }
 
-.agenda ol li::before {
+section.agenda ol li::before {
   content: counter(agenda-counter);
-  position: absolute;
-  left: 0;
-  top: 0.35em;
+  flex-shrink: 0;
   background-color: #286da9;
   color: #fff;
   font-weight: 700;
-  font-size: 0.75em;
-  width: 1.6em;
-  height: 1.6em;
+  font-size: 0.7em;
+  width: 1.7em;
+  height: 1.7em;
   border-radius: 50%;
   display: flex;
   align-items: center;
