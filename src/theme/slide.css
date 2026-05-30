@@ -11,6 +11,7 @@
 section {
   background-image: none;
   font-family: 'Noto Sans JP', sans-serif;
+  font-size: 22px;
   padding-top: 90px;
   padding-left: 40px;
   padding-right: 40px;
@@ -75,23 +76,23 @@ section.lead p {
 header {
   background-color: #286da9;
   color: #fff;
-  font-size: 1em;
+  font-size: 1.5em;
   font-weight: 700;
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  padding: 15px 40px;
+  padding: 13px 40px;
   box-sizing: border-box;
   text-align: left;
 }
 
 blockquote {
-  max-width: 90%;
-  border-top: 0.1em dashed #555;
-  font-size: 60%;
-  position: absolute;
-  bottom: 20px;
+  border-left: 3px solid #286da9;
+  padding: 0.3em 0.8em;
+  color: #555;
+  font-style: italic;
+  margin: 0.5em 0;
 }
 blockquote::before {
   content: "";
@@ -100,24 +101,16 @@ blockquote::after {
   content: "";
 }
 
-/* 小さな引用スタイル */
-.citation {
-  font-size: 0.7em;
-  color: #666;
+.reference {
+  font-size: 0.58em;
+  color: #aaa;
   position: absolute;
-  bottom: 25px;
+  bottom: 20px;
+  left: 40px;
   right: 120px;
-  opacity: 0.8;
+  opacity: 0.75;
   font-style: italic;
-}
-
-.citation a {
-  color: #286da9;
-  text-decoration: none;
-}
-
-.citation a:hover {
-  text-decoration: underline;
+  line-height: 1.6;
 }
 
 img[alt~="center"] {
@@ -141,5 +134,40 @@ code {
 /* 中央寄せ用スタイル */
 .center {
   text-align: center;
+}
+
+/* Agenda スライド用スタイル */
+.agenda ol {
+  list-style: none;
+  counter-reset: agenda-counter;
+  padding: 0;
+  margin-top: 1em;
+}
+
+.agenda ol li {
+  counter-increment: agenda-counter;
+  font-size: 1.4em;
+  padding: 0.4em 0 0.4em 2.5em;
+  position: relative;
+  border-bottom: 1px solid #e8e8e8;
+  color: #333;
+}
+
+.agenda ol li::before {
+  content: counter(agenda-counter);
+  position: absolute;
+  left: 0;
+  top: 0.35em;
+  background-color: #286da9;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.75em;
+  width: 1.6em;
+  height: 1.6em;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
 
