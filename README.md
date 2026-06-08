@@ -16,6 +16,18 @@ pnpm dev
 pnpm build
 ```
 
+## PDF → PNG 変換
+
+スライドに論文のPDF図を使いたい場合は `pdftoppm`（poppler）で変換する。
+
+```bash
+# brew install poppler
+pdftoppm -png -r 150 path/to/figure.pdf output_prefix
+# → output_prefix-1.png として出力される
+```
+
+`-r 150` は解像度（DPI）。スライド用は 150 で十分、高品質にしたい場合は 300。
+
 ## PDF 読み取り
 
 講義資料のPDFは `pdftotext` でテキスト抽出してから読む（20MB超のファイルは直接 Read ツールでは読めないため）。

@@ -108,7 +108,29 @@ P5の発言が示す通り、プロでも一度に複数観点を見ることは
 
 ## AI Can Now Generate Multiple Video Variations
 
-==![w:900](./image/teaser_new.png)=={.image}
+<div style="display:flex; justify-content:center; align-items:center; gap:80px; margin-top:40px;">
+
+<div style="text-align:center;">
+
+![w:260](./image/capcut-seeklogo.png)
+
+**CapCut**
+
+</div>
+
+<div style="text-align:center;">
+
+![w:260](./image/opusclip.png)
+
+**OpusClip**
+
+</div>
+
+</div>
+
+<br>
+
+### → One click generates **10+ different edited videos**
 
 <!-- 
 CapCutやOpusClipなどの現代のAIビデオ編集ツールは、
@@ -182,6 +204,13 @@ Formative Studyの詳細：
 P1「文字起こしだけでは映像の問題が見えない」
 → タイムライン・文字起こし・動画プレビューの3つを組み合わせる必要がある。
 -->
+
+---
+<!-- _header: Proposed Method: VideoDiff -->
+
+## VideoDiff — Overview
+
+==![w:900](./image/teaser_new.png)=={.image}
 
 ---
 <!-- _header: Proposed Method: VideoDiff -->
@@ -322,14 +351,7 @@ P21：「強化学習みたいに、使うにつれて好みを学習してほ�
 
 ## Comparison Task: VideoDiff Halves Completion Time
 
-| Metric | Baseline | VideoDiff | Significance |
-|---|---|---|---|
-| **Avg. time per question** | 74 sec (SD=38) | **38 sec (SD=14)** | *p* < 0.05 |
-| **Accuracy (avg.)** | 0.66 | **0.93** | — |
-| **Mental Demand** | 4.33 | **2.75** | *p* < 0.05 |
-| **Effort** | 4.42 | **2.92** | *p* < 0.05 |
-| **Frustration** | 3.75 | **2.33** | *p* < 0.05 |
-| **Usefulness (comparison)** | 2.25 | **4.92** | *p* < 0.05 |
+==![w:820](./image/completion_time-1.png)=={.image}
 
 > *"In only three minutes? I'll just have to guess as I cannot watch all these videos."* — P16 (Baseline)
 
@@ -357,14 +379,7 @@ Usefulness評価（7点満点）：2.25→4.92と大幅に高い評価。
 
 ## Authoring Task: Higher Satisfaction & Creativity
 
-| Metric | Baseline → VideoDiff | Significance |
-|---|---|---|
-| **Video satisfaction** | Significantly improved | *p* < 0.05 |
-| **Creativity Support** | Significantly improved | *p* < 0.05 |
-| **Exploration** | Significantly improved | *p* < 0.05 |
-| **Usefulness** | 3.25 → **5.42** (7-pt scale) | *p* < 0.05 |
-
-==![w:1100](./image/user_edit_examples.jpg)=={.image}
+==![w:1150](./image/stacked_bar-1.png)=={.image}
 
 <!-- 
 制作タスクの結果です。
@@ -428,6 +443,8 @@ Limitationsを正直に説明します。
 
 ---
 <!-- _header: Conclusion -->
+
+## Key Takeaways
 
 **Problem:** AI generates multiple video alternatives, but comparing them is tedious and cognitively demanding
 
