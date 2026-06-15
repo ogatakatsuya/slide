@@ -348,3 +348,93 @@ Limitationsもいくつかあります。
 
 この「比較中心の設計」という考え方は動画に限らず、文書やコード、デザインなど、AIが複数案を生成するあらゆるドメインに応用できる重要な知見だと思います。以上です。ご清聴ありがとうございました。
 -->
+
+---
+<!-- _header: Q&A -->
+
+**Q.** 動画に対する評価基準は編集者と視聴者で異なると思うが、この研究ではどう扱っているか？
+*The evaluation criteria seem to differ between editors and viewers — how does this study handle that?*
+
+**A.** 本研究はプロ編集者の視点に絞って設計目標を導出しています。視聴者は「面白いか・引き込まれるか」を重視する傾向があり、ストーリー網羅性などの編集者的な軸とは異なる可能性があります。視聴者側の評価基準との比較は今後の課題として残っています。
+*This study derives design goals solely from the perspective of professional editors. Viewers tend to prioritize engagement over content completeness, so the axes may differ. Comparing editor vs. viewer evaluation criteria is left for future work.*
+
+---
+<!-- _header: Q&A -->
+
+**Q.** このシステムが普及したら、動画編集者の仕事はどう変わると思いますか？
+*If this system became widely used, how do you think the job of video editors would change?*
+
+**A.** 参加者の意見は分かれていました。P11は「繰り返し作業から解放されてクリエイティブな部分に集中できる」と肯定的でしたが、P10は「AIを監督している感じで自分が作った気がしない」と懸念を示しました。機械的な編集作業はAIが担い、編集者の役割は方向性の決定やクライアントとのコミュニケーションにシフトしていくと考えられます。
+*Participants were divided. P11 was positive — "freed from repetitive work, I can focus on the creative parts." P10 worried — "It feels like supervising AI rather than creating something myself." Mechanical editing will likely be handled by AI, shifting the editor's role toward creative direction and client communication.*
+
+---
+<!-- _header: Q&A -->
+
+**Q.** この論文でのp値の計算方法は？
+*How do they calculate the p-value in this paper?*
+
+**A.** Wilcoxon符号順位検定（ノンパラメトリック検定）を使用しています。Within-subjects設計かつ7点Likert尺度のような順序尺度データに適しており、正規分布の仮定が不要です。サンプルサイズが小さい（N=12）今回の設計には適切な選択です。
+*The paper uses the Wilcoxon signed-rank test, a non-parametric test suited for within-subjects designs with ordinal data (e.g., 7-point Likert scales). It does not assume a normal distribution, making it appropriate for this small sample size (N=12).*
+
+---
+<!-- _header: Q&A -->
+
+**Q.** タイムラインの同期は秒単位で一致しているのか、それとも大まかな対応なのか？
+*Does the timeline synchronization match precisely to the second, or does it just ensure scenes are roughly aligned?*
+
+**A.** VideoDiffはソース素材を共通アンカーとしてアライメントします。Source Viewでは「元素材の同じ時刻」を基準に縦に並ぶため、ソース上の位置は正確に対応します。一方Edited Viewでは各バリエーションの長さが異なるため秒単位の一致はなく、セクションの色分けで対応関係を表しています。
+*VideoDiff uses the source footage as a common anchor. In Source View, variations are aligned by their position in the original video, so the correspondence is precise. In Edited View, since each variation has a different duration, exact second-level sync is not maintained — section color-coding shows the correspondence instead.*
+
+---
+<!-- _header: Q&A -->
+
+**Q.** Rough Cutとはなんですか？
+*What is a Rough Cut?*
+
+**A.** Rough Cut（ラフカット）とは、長い撮影素材から使うシーンを選び出して並べた最初の編集案のことです。最終的な仕上げをかける前の「素案」で、どのシーンを何秒使うか・どの順番にするかを決めるフェーズです。VideoDiffではAIがこのRough Cutを10案自動生成し、タイムライン上で並べて比較できます。
+*A rough cut is the first edited draft assembled by selecting key scenes from the raw footage. It establishes what to include, in what order, and for how long — before any final polish. In VideoDiff, the AI automatically generates 10 rough cut alternatives that can be compared side-by-side on the timeline.*
+
+---
+<!-- _header: Q&A -->
+
+**Q.** 未実装の設計目標があるが、技術的な困難があったのか？
+*There are design goals that have not been implemented yet. Was there any technical difficulty involved?*
+
+**A.** D5（ジャンプカットなどの編集エラーの自動検出）を実現するには、映像・音声の品質を実際に解析する必要があります。しかし現在のシステムはGPT-4oが文字起こしのみを処理しており、映像品質を評価する手段がありません。動画のマルチモーダル解析は別の難しい技術問題として切り分けられ、将来課題とされています。
+*D5 (automatically detecting errors like jump cuts) requires analyzing the actual visual and audio quality of the video. However, the current system only feeds text transcripts to GPT-4o, giving it no way to evaluate visual content. Multimodal video analysis capable of detecting such errors is a separate hard problem and was scoped out as future work.*
+
+---
+<!-- _header: Q&A -->
+
+**Q.** 動画編集のハルシネーションはテキスト生成のそれと何が違うか？
+*When solving hallucinations in video editing, did you notice differences compared to hallucinations in text generation?*
+
+**A.** 最大の違いは検証の難しさです。テキストのハルシネーションは文章を読めば比較的気づきやすいですが、動画編集ではAIが「修正した」と言っても実際に再生して確認しないと発覚しません。またGPT-4oは文字起こしのみを処理するため、「映像的に本当に反映されたか」を自分で検証できません。この認識と実行のギャップが動画固有の問題です。
+*The key difference is how hard it is to detect. Text hallucinations are relatively easy to catch by reading. In video editing, even if the AI says "I applied the edit," you won't know it's wrong until you actually play back the video. Since GPT-4o only processes transcripts, it cannot verify whether the visual change was actually made — this perception-execution gap is unique to video.*
+
+---
+<!-- _header: Q&A -->
+
+**Q.** 候補動画の本数を変えた条件比較は行われていたか？また10本に設定した理由は？
+*Did the study include a comparison with different numbers of video alternatives? What was the rationale for choosing ten?*
+
+**A.** 候補数を変えた条件比較は行われていません。10本という数字はCapCutやOpusClipなど既存ツールに合わせたものです。ユーザースタディでは「ベースラインでは4名が10本に圧倒されたが、VideoDiffでは差分が可視化されることで同じ10本でも圧倒感が軽減された」という示唆が得られており、本数より比較UIの設計が重要であることが示されています。
+*No such comparison was conducted. The number 10 was chosen to match existing tools like CapCut and OpusClip. The user study revealed that 4 participants felt overwhelmed by 10 alternatives in the baseline, but not in VideoDiff — suggesting that the quality of the comparison UI matters more than the number of alternatives.*
+
+---
+<!-- _header: Q&A -->
+
+**Q.** 長尺動画（1時間超）に適用する場合、最大の課題は何か？
+*What do you think would be the biggest challenge when applying VideoDiff to videos longer than one hour?*
+
+**A.** セクション数の爆発的な増加が最大の課題です。本研究では12〜13分の動画を対象としましたが、1時間超になるとセクション数がタイムラインに収まりきらず、差分の視覚化が破綻します。また3段階の編集フローをそのまま適用すると各ステージの比較負荷も増大します。階層的な要約や自動クラスタリングなどの追加機能が必要になるでしょう。
+*The biggest challenge would be the explosion of sections. This study used 12–13 minute videos with a manageable number of sections. For a 1+ hour documentary, the timeline visualization would be overwhelmed. Applying the three-stage flow as-is would also multiply the comparison burden at each stage. Additional features like hierarchical summarization or automatic clustering of similar sections would be needed.*
+
+---
+<!-- _header: Q&A -->
+
+**Q.** 比較用に表示するキーフレームはどのように選ばれているか？
+*How is the key frame selected to facilitate comparison?*
+
+**A.** 等間隔サンプリング（periodic filmstrip sampling）を使っています。インテリジェントな選択ではなく、一定の時間間隔でフレームを抽出します。これがLimitationsに記載されている「短時間しか映らないオブジェクトが見逃される」問題の原因です。Q5（はさみが映っているか）で5名が誤答したのも、はさみが映ったフレームがたまたまサンプリングされなかったためです。将来的にはシーン変化検出や物体認識と組み合わせたスマートなサンプリングが改善策として考えられます。
+*Frames are extracted using periodic (fixed-interval) sampling, not intelligent selection. This is the root cause of the "short-duration objects can be missed" limitation noted in the paper — five users answered Q5 (about scissors) incorrectly because the frame showing the scissors happened not to be sampled. Future improvements could combine scene-change detection or object recognition for smarter frame selection.*
